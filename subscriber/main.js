@@ -1,6 +1,7 @@
 let http = require("http");
 let request = require("request");
-let QUEUE = "http://localhost:3001";
+let { QUEUE_SERVICE_HOST, QUEUE_SERVICE_PORT } = process.env;
+let QUEUE = `http://${QUEUE_SERVICE_HOST}:${QUEUE_SERVICE_PORT}`;
 
 function handler(req, res) {
   if (req.url === "/favicon.ico") res.end("");
