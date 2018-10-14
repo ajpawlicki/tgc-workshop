@@ -54,6 +54,12 @@ and then navigate to `http://localhost:3002` to read it, either from the command
 
 ```
 $ http :3002
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 38
+Date: Sun, 14 Oct 2018 23:12:23 GMT
+
+{"name":"Mac","position":"Sheriff of Paddys"}
 ```
 
 You can `POST` however many messages you want via the publisher, and then use the subscriber to read them LIFO style. For debugging purposes, you can also see the current contents of the queue at any time by navigating to `http://localhost:3001/queue`.
@@ -220,7 +226,7 @@ publisher    NodePort    10.103.107.240   <none>        3000:30233/TCP   2m
 You will see that the publisher service maps ports `3000:30233`, the right hand number being randomly assigned by Kubernetes. This means that all requests to our laptop's `http://localhost:30233` will now be routed to the publisher app's port 3000. Run the following command, substituting the randomly assigned port you see mapped in the publisher service.
 
 ```
-$ http POST :30233 name=Mac position='Sheriff of Paddys'
+$ http POST :30233 name=Charlie position=Janitor
 ```
 
 and ensure that it is successful.
