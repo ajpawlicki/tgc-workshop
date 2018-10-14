@@ -217,15 +217,17 @@ NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
 publisher    NodePort    10.103.107.240   <none>        3000:30233/TCP   2m
 ```
 
-You will see that the publisher service maps ports `3000:30233`, the right hand number being randomly assigned by Kubernetes. This means that all requests to `http://localhost:30233` will now be routed to the publisher app's port 3000. Run the following command, substituting the randomly assigned port you see mapped in the publisher service.
+You will see that the publisher service maps ports `3000:30233`, the right hand number being randomly assigned by Kubernetes. This means that all requests to our laptop's `http://localhost:30233` will now be routed to the publisher app's port 3000. Run the following command, substituting the randomly assigned port you see mapped in the publisher service.
 
 ```
 $ http POST :30233 name=Mac position='Sheriff of Paddys'
 ```
 
-and ensure that it is successful. Now go ahead and expose the subscriber with a NodePort service as well. Attempt to read a message.
+and ensure that it is successful.
 
-Congratulations!
+Now go ahead and expose the subscriber with a NodePort service as well. Attempt to read a message.
+
+If you successfully retrieved a message from a queue, that means you've officially deployed a distributed system to Kubernetes. Congratulations!
 
 ### Stretch Goals
 
@@ -239,7 +241,7 @@ These stretch goals are just suggestions. If you think of anything cool to build
 
 - Create a [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/), and have the Queue verify that secret is present in every request before it alters the queue
 
-- Make the subscriber component truly "subscribe", instead of just being a reader -- use sockets, or some existing framework, to implement real subscription behvavior.
+- Make the queue a bit more persistent by flushing it to a mounted [Volume](https://kubernetes.io/docs/concepts/storage/volumes/).
 
 - Use a real message queue (e.g RabbitMQ) instead of our in-memory queue.
 - Anything else that catches your fancy!
