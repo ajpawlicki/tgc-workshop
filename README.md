@@ -4,7 +4,7 @@
 
 Kubernetes is a powerful suite of tools to orchestrate containerized apps. Let's dive in with a small starter project that will familiarize us with some important Kubernetes resources, and get a feel for what a typical workflow will be.
 
-You will start with a small distributed system made up of 3 components:
+You will start with a small system made up of 3 components:
 
 - an in-memory queue
 - a publisher
@@ -26,11 +26,13 @@ to ensure setup is complete.
 
 It's also recommended to have an easy way to send HTTP requests. This workshop assumes [HTTPie](https://httpie.org) throughout the examples, but something like [Postman](https://www.getpostman.com/) will work just as well.
 
+_NOTE: HTTPie syntax allows for localhost shorthand: `http :3000` is equivalent to `http http://localhost:3000`. This workshop uses that shorthand syntax frequently!_
+
 ### Organization
 
 This repo comes with some boilerplate code that comprises an un-containerized app. Each component is a small HTTP server written in Javascript. Feel free to translate this code into a language you are more familiar with, but note that you will only need to make very minimal changes to this code throughout the workshop.
 
-Try to complete each step on your own. There are git branches that you can check out to view the solution of every stage, in case you want to double check your work or if you get stuck.
+Try to complete each step on your own, in order. There are git branches that you can check out to view solutions, in case you want to double check your work or if you get stuck.
 
 ### Workshop
 
@@ -54,7 +56,7 @@ and then navigate to `http://localhost:3002` to read it, either from the command
 $ http :3002
 ```
 
-You can `POST` however many messages you want via the publisher, and then use the subscriber to read them LIFO style. You can also see the current contents of the queue at any time by navigating to `http://localhost:3001/queue`.
+You can `POST` however many messages you want via the publisher, and then use the subscriber to read them LIFO style. For debugging purposes, you can also see the current contents of the queue at any time by navigating to `http://localhost:3001/queue`.
 
 ```
 $ http :3001/queue
@@ -165,7 +167,7 @@ For fun, you can open two terminals, and in one, run `kubectl get pod -w` (-w fo
 
 At this point, all 3 of our components are running in Kubernetes. But we can't actually hit any of our services since none of the pods are exposed to the outside world. In fact, even if we could hit, say, our publisher service, it wouldn't do us any good. The `main.js` file in publisher will attempt to enqueue a message at `http://localhost:3001`, which works great when we run all of our services on our laptop, but breaks when run in isolated pods in a Kubernetes cluster (where each pod has its own separate notion of localhost).
 
-If you are familiar with [12 factor apps](https://12factor.net), you'll know that it is best practice for an app to get its configuration from its environment. We no longer want our apps to hardcode `localhost` endpoints -- instead, we want to pass these endpoints as environment variables, so the code can remain more flexible and robust. In effect, each app is like a big function, and we pass arguments to them via environment variables. Kubernetes makes this very easy for us.
+If you are familiar with [12 factor apps](https://12factor.net), you'll know that it is best practice for an app to get its configuration from its environment. We no longer want our apps to hardcode `localhost` endpoints -- instead, we want to pass these endpoints as environment variables, so the code can remain more flexible and robust. Kubernetes makes this very easy for us.
 
 1. Use the builtin `env` command to list the environment variables on the publisher pod:
 
@@ -205,16 +207,16 @@ $ kubectl expose deployment publisher --type=NodePort --port=3000
 
 This command causes Kubernetes to find the node where our publisher pod is running, allocate a random port on that node, expose it externally, and map all requests to that port to whichever `--port` we provide (3000, in this case, since publisher runs on port 3000).
 
-Run
+```
+$  kubectl get svc publisher
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+publisher    NodePort    10.103.107.240   <none>        3000:30233/TCP   2m
+```
+
+You will see that the publisher service maps ports `3000:30233`, the right hand number being randomly assigned by Kubernetes. This means that all requests to `http://localhost:30233` will now be routed to the publisher app's port 3000. Run the following command, substituting the randomly assigned port you see mapped in the publisher service.
 
 ```
-$ kubectl get svc
-```
-
-and find the `publisher` service. You will see that it maps something like `tcp/3000:32068`, the right hand number being a randomly assigned port on the node. Run
-
-```
-$ http POST http://localhost:<NODE_PORT_NUMBER> name=Mac position='Sheriff of Paddys'
+$ http POST :30233 name=Mac position='Sheriff of Paddys'
 ```
 
 and ensure that it is successful. Now go ahead and expose the subscriber with a NodePort service as well. Attempt to read a message.
@@ -225,9 +227,13 @@ Congratulations!
 
 These stretch goals are just suggestions. If you think of anything cool to build out this system, feel free to jam on whatever interests you!
 
-- Make each component of our app listen on port 3000, instead of 3001 and 3002. You will need to update the existing Kube services to map the correct ports. Note how Kubernetes services make it so we don't have to worry about allocating different localhost ports for our apps anymore!
+- Make each component of our app listen on port 3000, instead of 3001 and 3002. You will need to update the existing Kube services to map the correct ports. Note how Kubernetes/containers services make it so we don't have to worry about allocating different localhost ports for our apps anymore!
 
 - Write a script called `bin/build-and-deploy` for each component that will build the docker image and deploy to our local kubernetes cluster. Make sure to put it in `.dockerignore`. Then write another that will build and deploy the entire 3-part system.
+
+- Create a dedicated [Kubernetes namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) for these apps, and move the deployments + services to that namespace
+
+- Create a [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/), and have the Queue verify that secret is present in every request before it alters the queue
 
 - Make the subscriber component truly "subscribe", instead of just being a reader -- use sockets, or some existing framework, to implement real subscription behvavior.
 
