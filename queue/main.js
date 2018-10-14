@@ -7,7 +7,7 @@ function handler(req, res) {
     let message = "";
     req.on("data", chunk => (message += chunk.toString()));
     req.on("end", () => {
-      console.log("message is:", message);
+      console.log("Enqueue message:", message);
       queue.push(JSON.parse(message));
       res.end("Enqueued message.");
     });
