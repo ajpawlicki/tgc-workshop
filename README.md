@@ -84,6 +84,8 @@ _To see one possible solution, check out the branch **solution-images**_
 $ git checkout solution-images
 ```
 
+or view [this commit](https://github.com/cjea/tgc-workshop/commit/bd0911147eeaf5af1e9e60dc787cbf8564f81777)
+
 #### 3. Our first Kubernetes errors
 
 Let's try to run our publisher app in a Kubernetes pod by creating a deployment named `publisher`.
@@ -194,6 +196,8 @@ _To see one possible solution, check out the branch **solution-internal-service*
 ```
 $ git checkout solution-internal-service
 ```
+
+or view [this commit](https://github.com/cjea/tgc-workshop/commit/a53035be93594ce9fe6ad11d783d7ddc4c7d5147)
 
 #### 5. Exposing our services externally
 
