@@ -117,7 +117,7 @@ $ kubectl describe pod <YOUR_POD_NAME>
 
 At the bottom of the output, you will see a list of events. One will be something like `Failed to pull image "workshop/publisher": rpc error: code = Unknown desc = Error response from daemon: pull access denied for workshop/publisher, repository does not exist or may require 'docker login'`
 
-The problem is that Kubernetes thinks that we want to pull our `workshop/publisher` image from a remote image repository, like docker hub. Since our images are local, we need to indicate to Kubernetes that we do not want it to try pulling this image.
+Kubernetes thinks that we want to pull our `workshop/publisher` image from a remote image repository, like docker hub. We need to indicate to Kubernetes that we do not want it to try pulling this image.
 
 ```
 $ kubectl run publisher --image=workshop/publisher --image-pull-policy=Never
@@ -143,7 +143,7 @@ publisher-668597fcc6-kw777   1/1       Running   0          1m
 
 Success! Go ahead and run `kubectl delete pod <POD_NAME>`, and watch as the pod terminates while a new one immediately replaces it! Now that our deployment is in place, we can delete this pod over and over, and a new one (with a slightly different name) will constantly pop up to take its place. Feel the power!
 
-Feel free to `describe` this pod as well and take a look at the Events. That's what a successful pod looks like. Also note: you'll be creating and deleting Kubernetes resources all the time. Nothing is sacred. Get used to this process!
+Feel free to `describe` this pod as well and take a look at the Events. That's what a successful pod looks like. Also note: you'll be creating and deleting Kubernetes resources all the time. Nothing is sacred.
 
 #### 4. Run the pods
 
@@ -175,7 +175,7 @@ For fun, you can open two terminals, and in one, run `kubectl get pod -w` (-w fo
 
 At this point, all 3 of our components are running in Kubernetes. But we can't actually hit any of our services since none of the pods are exposed to the outside world. In fact, even if we could hit, say, our publisher service, it wouldn't do us any good. The `main.js` file in publisher will attempt to enqueue a message at `http://localhost:3001`, which works great when we run all of our services on our laptop, but breaks when run in isolated pods in a Kubernetes cluster (where each pod has its own separate notion of localhost).
 
-If you are familiar with [12 factor apps](https://12factor.net), you'll know that it is best practice for an app to get its configuration from its environment. We no longer want our apps to hardcode `localhost` endpoints -- instead, we want to pass these endpoints as environment variables, so the code can remain more flexible and robust. Kubernetes makes this very easy for us.
+If you are familiar with 12 factor app [philosophy](https://12factor.net), you'll know that it is best practice for an app to get its configuration from its environment. We no longer want our apps to hardcode `localhost` endpoints -- instead, we want to pass these endpoints as environment variables, so the code can remain more flexible and robust. Kubernetes makes this very easy for us.
 
 1. Use the builtin `env` command to list the environment variables on the publisher pod:
 
@@ -183,7 +183,7 @@ If you are familiar with [12 factor apps](https://12factor.net), you'll know tha
 $ kubectl exec <PUBLISHER_POD_NAME> env
 ```
 
-2. Next, expose the queue deployment to the rest of the cluster (we'll see what "expose" means in just a moment . . .)
+2. Next, expose the queue deployment to the rest of the cluster. Kubernetes allows pods to communicate with each other via a `ClusterIP` service, which is a cluster-wide IP address that any pod can reach. There are multiple types of services (we'll see `NodePort` services in the next step), but the `kubectl expose` command defaults to creating a `ClusterIP` service.
 
 ```
 $ kubectl expose deployment queue --port=3001
@@ -215,7 +215,7 @@ To expose an app externally, we must create a NodePort service.
 $ kubectl expose deployment publisher --type=NodePort --port=3000
 ```
 
-This command causes Kubernetes to find the node where our publisher pod is running, allocate a random port on that node, expose it externally, and map all requests to that port to whichever `--port` we provide (3000, in this case, since publisher runs on port 3000).
+This command causes Kubernetes to automatically allocate a random port on our machine, and then route all requests from that port on our laptop, to the `publisher`'s pods at the `--port` we provide.
 
 ```
 $  kubectl get svc publisher
@@ -223,7 +223,7 @@ NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
 publisher    NodePort    10.103.107.240   <none>        3000:30233/TCP   2m
 ```
 
-You will see that the publisher service maps ports `3000:30233`, the right hand number being randomly assigned by Kubernetes. This means that all requests to our laptop's `http://localhost:30233` will now be routed to the publisher app's port 3000. Run the following command, substituting the randomly assigned port you see mapped in the publisher service.
+You will see that the publisher service automatically created a CLUSTER-IP, and that it connects ports `3000:30233`, the right hand number having been randomly assigned by Kubernetes. This means that all requests to our laptop's `http://localhost:30233` will now be routed to the publisher app's port 3000. Run the following command, substituting the randomly assigned port you see mapped in the publisher service.
 
 ```
 $ http POST :30233 name=Charlie position=Janitor
