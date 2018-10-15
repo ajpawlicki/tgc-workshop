@@ -1,4 +1,4 @@
-# Totally Getting Kubernetes -- Workshop
+# Totally Getting Containers -- Workshop
 
 ### Intro
 
