@@ -76,7 +76,7 @@ The first step to deploying an app to Kubernetes is to build it into an image fo
 **Task**:
 
 1. Create a file called `Dockerfile` at the root of each of the 3 components' directories.
-2. In the Dockerfiles, use `node` as a base image, copy in the necessary files, run `npm install` when necessary, and have the container run the `main.js` file with node.
+2. In the Dockerfiles, use `node` as a base image, copy in the necessary files, run `npm install` when necessary, and have the container run the `main.js` file with node. You will use the directives: [FROM](https://docs.docker.com/engine/reference/builder/#from), [COPY](https://docs.docker.com/engine/reference/builder/#copy), [RUN](https://docs.docker.com/engine/reference/builder/#run), and [CMD](https://docs.docker.com/engine/reference/builder/#cmd). If you haven't written a Dockerfile before, then [this guide](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) will be really helpful.
 3. Use a `.dockerignore` file to ignore the node_modules/ directory. This keeps the build context small.
 4. Build the images e.g:
 
