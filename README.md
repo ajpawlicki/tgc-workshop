@@ -12,6 +12,10 @@ You will start with a small system made up of 3 components:
 
 Following along with the instructions below, you will deploy all 3 of these components to a local Kubernetes cluster, and then can go further by implementing some stretch goals at the end of this document.
 
+_NOTE: this workshop complements the presentations from the **LiveRamp Presents: Totally Getting Containers** meetup. Hopefully I will be able to post the recording of the talks as well, but for now, here are the slides:_
+[Totally Getting Kubernetes](https://docs.google.com/presentation/d/1VCaTsz2MDKkRYleptdc___5pvSNB2dpQ53jtEsnwzfQ/edit?usp=sharing)
+[Totally Getting Docker](https://docs.google.com/presentation/d/1HCZwYax7N6_Dso7f7v9soF-aLAo_lOMkmDerQ-hg7hM/edit?usp=sharing)
+
 ### Prerequisites
 
 This workshop assumes minimal knowledge of Kubernetes. Even if you're brand new to Kube, some light googling throughout this project should be sufficient. The only 3 resources that we will encounter are [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod/), [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/), and [Services](https://kubernetes.io/docs/concepts/services-networking/service/).
