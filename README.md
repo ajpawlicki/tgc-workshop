@@ -1,4 +1,4 @@
-# Totally Getting Containers – Workshop
+# Totally Getting Containers Workshop
 
 ### Intro
 
