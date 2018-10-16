@@ -1,24 +1,21 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Totally Getting Kubernetes -- Workshop](#totally-getting-kubernetes----workshop)
-    - [Intro](#intro)
-    - [Prerequisites](#prerequisites)
-    - [Organization](#organization)
-    - [Workshop](#workshop)
-      - [1. Running the app without kubernetes](#1-running-the-app-without-kubernetes)
-      - [2. Build docker images for each component](#2-build-docker-images-for-each-component)
-      - [3. Our first Kubernetes errors](#3-our-first-kubernetes-errors)
-      - [4. Run the pods](#4-run-the-pods)
-      - [5. Exposing our services internally](#5-exposing-our-services-internally)
-      - [5. Exposing our services externally](#5-exposing-our-services-externally)
-    - [Stretch Goals](#stretch-goals)
-    - [Hope you enjoyed!](#hope-you-enjoyed)
+
+- [Intro](#intro)
+- [Prerequisites](#prerequisites)
+- [Organization](#organization)
+- [Workshop](#workshop)
+  - [1. Running the app without kubernetes](#1-running-the-app-without-kubernetes)
+  - [2. Build docker images for each component](#2-build-docker-images-for-each-component)
+  - [3. Our first Kubernetes errors](#3-our-first-kubernetes-errors)
+  - [4. Run the pods](#4-run-the-pods)
+  - [5. Exposing our services internally](#5-exposing-our-services-internally)
+  - [5. Exposing our services externally](#5-exposing-our-services-externally)
+- [Stretch Goals](#stretch-goals)
+- [Hope you enjoyed!](#hope-you-enjoyed)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Totally Getting Kubernetes -- Workshop
 
 ### Intro
 
@@ -262,6 +259,8 @@ If you successfully retrieved a message from a queue, that means you've official
 ### Stretch Goals
 
 These stretch goals are just suggestions. If you think of anything cool to build out this system, feel free to jam on whatever interests you!
+
+- Try writing the Kubernetes resources by hand, instead of generating them from kubectl. This is what you would do in a production environment.
 
 - Make each component of our app listen on port 3000, instead of 3001 and 3002. You will need to update the existing Kube services to map the correct ports. Note how Kubernetes/containers services make it so we don't have to worry about allocating different localhost ports for our apps anymore!
 
