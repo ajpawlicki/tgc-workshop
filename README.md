@@ -243,6 +243,8 @@ If you successfully retrieved a message from a queue, that means you've official
 
 These stretch goals are just suggestions. If you think of anything cool to build out this system, feel free to jam on whatever interests you!
 
+- Try writing the Kubernetes resources by hand, instead of generating them from kubectl. This is what you would do in a production environment.
+
 - Make each component of our app listen on port 3000, instead of 3001 and 3002. You will need to update the existing Kube services to map the correct ports. Note how Kubernetes/containers services make it so we don't have to worry about allocating different localhost ports for our apps anymore!
 
 - Write a script called `bin/build-and-deploy` for each component that will build the docker image and deploy to our local kubernetes cluster. Make sure to put it in `.dockerignore`. Then write another that will build and deploy the entire 3-part system.
