@@ -1,3 +1,23 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Totally Getting Kubernetes -- Workshop](#totally-getting-kubernetes----workshop)
+    - [Intro](#intro)
+    - [Prerequisites](#prerequisites)
+    - [Organization](#organization)
+    - [Workshop](#workshop)
+      - [1. Running the app without kubernetes](#1-running-the-app-without-kubernetes)
+      - [2. Build docker images for each component](#2-build-docker-images-for-each-component)
+      - [3. Our first Kubernetes errors](#3-our-first-kubernetes-errors)
+      - [4. Run the pods](#4-run-the-pods)
+      - [5. Exposing our services internally](#5-exposing-our-services-internally)
+      - [5. Exposing our services externally](#5-exposing-our-services-externally)
+    - [Stretch Goals](#stretch-goals)
+    - [Hope you enjoyed!](#hope-you-enjoyed)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Totally Getting Kubernetes -- Workshop
 
 ### Intro
