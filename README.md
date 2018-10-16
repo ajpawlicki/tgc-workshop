@@ -104,6 +104,10 @@ The first step to deploying an app to Kubernetes is to build it into an image fo
 ```
 $ docker build ./publisher -t workshop/publisher
 ```
+You can list your images to verify successful creation:
+```
+$ docker image ls
+```
 
 _To see one possible solution, check out the branch **solution-images**_
 
